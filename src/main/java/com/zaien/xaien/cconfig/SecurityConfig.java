@@ -22,7 +22,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http.authorizeRequests()
-                .antMatchers("/sample/all").permitAll();
+                .antMatchers("/sample/all").permitAll()
+                .antMatchers("/sample/member").hasRole("USER");
+
+        http.formLogin(); //인가/인증에 문제시 로그인 화면
     }
 
     @Override
