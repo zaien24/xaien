@@ -26,16 +26,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/sample/member").hasRole("USER");
 
         http.formLogin(); //인가/인증에 문제시 로그인 화면
-        http.csrf().disable();
-        http.logout();
+//        http.csrf().disable();
+//        http.logout();
     }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-
-        auth.inMemoryAuthentication().withUser("user1") //사용자 계정은 user1
-                .password("$2a$10$qbTVRGiC8RePIsMz4z/QP.LjBmLOMGXBCkmW2comzfNaoeidd5/aa") //1111 패스워드 인코딩
-                .roles("USER");
-
-    }
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//
+//        auth.inMemoryAuthentication().withUser("user1") //사용자 계정은 user1
+//                .password("$2a$10$qbTVRGiC8RePIsMz4z/QP.LjBmLOMGXBCkmW2comzfNaoeidd5/aa") //1111 패스워드 인코딩
+//                .roles("USER");
+//
+//    }
 }
