@@ -14,10 +14,19 @@ public class ClubAuth2UserDetailsService extends DefaultOAuth2UserService {
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 
-        log.info("--------------------------------------");
-        log.info("userRequest:" + userRequest);
+        String clientName = userRequest.getClientRegistration().getClientName();
 
-        return super.loadUser(userRequest);
+        log.info("clientName: " + clientName);
+        log.info(userRequest.getAdditionalParameters());
+
+        OAuth2User oAuth2User =  super.loadUser(userRequest);
+
+        log.info("==============================");
+        oAuth2User.getAttributes().forEach((k,v) -> {
+            log.info(k +":" + v);
+        });
+
+        return oAuth2User;
     }
 
 }
