@@ -9,6 +9,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @Log4j2
 @RequestMapping("/notes/")
@@ -34,6 +36,15 @@ public class NoteController {
         log.info("-----------read-------------------------------");
         log.info(num);
         return new ResponseEntity<>(noteService.get(num), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<NoteDTO>> getList(String email){
+
+        log.info("-----------getList-------------------------------");
+        log.info(email);
+
+        return new ResponseEntity<>(noteService.getAllWithWriter(email), HttpStatus.OK);
     }
 
 }
