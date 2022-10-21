@@ -47,4 +47,16 @@ public class NoteController {
         return new ResponseEntity<>(noteService.getAllWithWriter(email), HttpStatus.OK);
     }
 
+    @DeleteMapping(value = "/{num}", produces = MediaType.TEXT_PLAIN_VALUE)
+    public ResponseEntity<String> remove(@PathVariable("num") Long num){
+
+        log.info("-----------remove-------------------------------");
+        log.info(num);
+
+        noteService.remove(num);
+
+        return new ResponseEntity<>("removed", HttpStatus.OK);
+
+    }
+
 }
