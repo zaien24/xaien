@@ -59,4 +59,16 @@ public class NoteController {
 
     }
 
+    @PutMapping(value = "/{num}", produces = MediaType.TEXT_PLAIN_VALUE)
+    public ResponseEntity<String> modify(@RequestBody NoteDTO noteDTO){
+
+        log.info("-----------modify-------------------------------");
+        log.info(noteDTO);
+
+        noteService.modify(noteDTO);
+
+        return new ResponseEntity<>("modified", HttpStatus.OK);
+
+    }
+
 }
