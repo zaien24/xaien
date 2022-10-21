@@ -3,8 +3,10 @@ package com.zaien.xaien.security.service;
 import com.zaien.xaien.entity.ClubMember;
 import com.zaien.xaien.entity.ClubMemberRole;
 import com.zaien.xaien.repository.ClubMemberRepository;
+import com.zaien.xaien.security.dao.ClubAuthMemberDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -13,6 +15,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Log4j2
 @Service
@@ -53,7 +56,20 @@ public class ClubAuth2UserDetailsService extends DefaultOAuth2UserService {
 
         ClubMember member = saveSocialMember(email);
 
-        return oAuth2User;
+        ClubAuthMemberDTO clubAuthMember = new ClubAuthMemberDTO(
+                member.getEmail(),
+                member.getPassword(),
+                true,   //fromSocial
+                member.getRoleSet().stream().map(
+                                role -> new SimpleGrantedAuthority("ROLE_" + role.name()))
+                        .collect(Collectors.toList()),
+                oAuth2User.getAttributes()
+        );
+        clubAuthMember.setName(member.getName());
+
+
+        return clubAuthMember;
+
     }
 
     private ClubMember saveSocialMember(String email){
