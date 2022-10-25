@@ -1,6 +1,7 @@
 package com.zaien.xaien.config;
 
 import com.zaien.xaien.security.filter.ApiCheckFilter;
+import com.zaien.xaien.security.filter.ApiLoginFilter;
 import com.zaien.xaien.security.handler.ClubLoginSuccessHandler;
 import com.zaien.xaien.security.service.ClubUserDetailsService;
 import lombok.extern.log4j.Log4j2;
@@ -41,6 +42,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.rememberMe().tokenValiditySeconds(60*60*7).userDetailsService(userDetailsService);  //7days
 
         http.addFilterBefore(apiCheckFilter(), UsernamePasswordAuthenticationFilter.class);
+    }
+
+    @Bean
+    public ApiLoginFilter apiLoginFilter() throws Exception{
+
+        ApiLoginFilter apiLoginFilter =  new ApiLoginFilter("/api/login");
+        apiLoginFilter.setAuthenticationManager(authenticationManager());
+        
+        return apiLoginFilter;
     }
 
     @Bean
