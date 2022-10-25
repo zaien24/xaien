@@ -45,10 +45,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public ApiCheckFilter apiCheckFilter() {
-
-        return new ApiCheckFilter();
+        return new ApiCheckFilter("/notes/**/*");
     }
-
 
     @Bean
     public ClubLoginSuccessHandler successHandler() {
