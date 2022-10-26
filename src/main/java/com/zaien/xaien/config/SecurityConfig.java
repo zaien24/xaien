@@ -2,6 +2,7 @@ package com.zaien.xaien.config;
 
 import com.zaien.xaien.security.filter.ApiCheckFilter;
 import com.zaien.xaien.security.filter.ApiLoginFilter;
+import com.zaien.xaien.security.handler.ApiLoginFailHandler;
 import com.zaien.xaien.security.handler.ClubLoginSuccessHandler;
 import com.zaien.xaien.security.service.ClubUserDetailsService;
 import lombok.extern.log4j.Log4j2;
@@ -50,7 +51,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         ApiLoginFilter apiLoginFilter =  new ApiLoginFilter("/api/login");
         apiLoginFilter.setAuthenticationManager(authenticationManager());
 
+        apiLoginFilter
+                .setAuthenticationFailureHandler(new ApiLoginFailHandler());
+
         return apiLoginFilter;
+
+
     }
 
     @Bean
