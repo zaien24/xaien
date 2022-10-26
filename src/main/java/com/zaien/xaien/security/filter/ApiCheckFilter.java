@@ -2,6 +2,7 @@ package com.zaien.xaien.security.filter;
 
 import lombok.extern.log4j.Log4j2;
 import org.springframework.util.AntPathMatcher;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -35,9 +36,30 @@ public class ApiCheckFilter extends OncePerRequestFilter {
             log.info("ApiCheckFilter.................................................");
             log.info("ApiCheckFilter.................................................");
 
+            boolean checkHeader = checkAuthHeader(request);
+
+            if(checkHeader){
+                filterChain.doFilter(request, response);
+                return;
+            }
             return;
         }
 
         filterChain.doFilter(request, response);
+    }
+
+    private boolean checkAuthHeader(HttpServletRequest request) {
+        boolean checkResult = false;
+
+        String authHeader = request.getHeader("Authorization");
+
+        if(StringUtils.hasText(authHeader)){
+            log.info("Authorization exist: " + authHeader);
+            if (authHeader.equals("12345678")) {
+                checkResult = true;
+            }
+        }
+
+        return checkResult;
     }
 }

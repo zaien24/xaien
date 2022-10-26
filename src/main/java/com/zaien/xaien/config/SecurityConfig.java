@@ -49,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         ApiLoginFilter apiLoginFilter =  new ApiLoginFilter("/api/login");
         apiLoginFilter.setAuthenticationManager(authenticationManager());
-        
+
         return apiLoginFilter;
     }
 
@@ -65,7 +65,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 //    @Override
 //    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//
+//  
 //        auth.inMemoryAuthentication().withUser("user1") //사용자 계정은 user1
 //                .password("$2a$10$qbTVRGiC8RePIsMz4z/QP.LjBmLOMGXBCkmW2comzfNaoeidd5/aa") //1111 패스워드 인코딩
 //                .roles("USER");
