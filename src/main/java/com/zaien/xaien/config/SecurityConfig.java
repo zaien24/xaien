@@ -1,5 +1,6 @@
 package com.zaien.xaien.config;
 
+import com.zaien.xaien.security.util.JWTUtil;
 import com.zaien.xaien.security.filter.ApiCheckFilter;
 import com.zaien.xaien.security.filter.ApiLoginFilter;
 import com.zaien.xaien.security.handler.ApiLoginFailHandler;
@@ -9,6 +10,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -48,15 +50,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public ApiLoginFilter apiLoginFilter() throws Exception{
 
-        ApiLoginFilter apiLoginFilter =  new ApiLoginFilter("/api/login");
+        ApiLoginFilter apiLoginFilter =  new ApiLoginFilter("/api/login", jwtUtil());
         apiLoginFilter.setAuthenticationManager(authenticationManager());
 
         apiLoginFilter
                 .setAuthenticationFailureHandler(new ApiLoginFailHandler());
 
         return apiLoginFilter;
+    }
 
-
+    @Bean
+    public JWTUtil jwtUtil() {
+        return new JWTUtil();
     }
 
     @Bean

@@ -46,9 +46,7 @@ public class JWTUtil {
 
             contentValue = claims.getSubject();
 
-
-
-        }catch(Exception e){
+        } catch(Exception e){
             e.printStackTrace();
             log.error(e.getMessage());
             contentValue = null;

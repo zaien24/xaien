@@ -1,5 +1,7 @@
 package com.zaien.xaien.security.filter;
 
+import com.zaien.xaien.security.dao.ClubAuthMemberDTO;
+import com.zaien.xaien.security.util.JWTUtil;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,6 +17,14 @@ import java.io.IOException;
 
 @Log4j2
 public class ApiLoginFilter extends AbstractAuthenticationProcessingFilter {
+
+    private JWTUtil jwtUtil;
+
+    public ApiLoginFilter(String defaultFilterProcessesUrl, JWTUtil jwtUtil) {
+
+        super(defaultFilterProcessesUrl);
+        this.jwtUtil = jwtUtil;
+    }
 
     public ApiLoginFilter(String defaultFilterProcessesUrl) {
         super(defaultFilterProcessesUrl);
@@ -41,5 +51,22 @@ public class ApiLoginFilter extends AbstractAuthenticationProcessingFilter {
         log.info("successfulAuthentication: " + authResult);
 
         log.info(authResult.getPrincipal());
+
+        //email address
+        String email = ((ClubAuthMemberDTO)authResult.getPrincipal()).getUsername();
+
+        String token = null;
+        try {
+            token = jwtUtil.generateToken(email);
+
+            response.setContentType("text/plain");
+            response.getOutputStream().write(token.getBytes());
+
+            log.info(token);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
